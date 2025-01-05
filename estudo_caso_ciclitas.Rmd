@@ -1,0 +1,141 @@
+---
+title: 'Estudo de caso: Como um serviço de compartilhamento de bicicletas alcança
+  o sucesso rápido?'
+author: "Vanessa Costa"
+date: "2025-01-05"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+## Como um serviço de compartilhamento de bicicletas alcança o sucesso rápido?
+Este estudo de caso foi proposto pela plataforma de ensino Coursera como parte do trabalho de conclusão do curso para obtenção da certificação profissional de Análise de Dados do Google Data Analytics.
+
+### Contextualização
+Em 2016, a Cyclistic lançou uma oferta bem-sucedida de compartilhamento de bicicletas. Desde então, o programa cresceu para um total de 5.824 bicicletas que são georastreadas e bloqueadas em uma rede de 692 estações em Chicago. As bicicletas podem ser desbloqueadas de uma estação e devolvidas a qualquer outra estação no sistema a qualquer momento.
+Até agora, a estratégia de marketing da Cyclistic dependia da construção de conscientização geral e do apelo a amplos segmentos de consumidores. Uma abordagem que ajudou a tornar essas coisas possíveis foi a flexibilidade de seus planos de preços: passes de viagem única, passes de dia inteiro e assinaturas anuais. Os clientes que compram passes de viagem única ou de dia inteiro são chamados de passageiros casuais.
+Os clientes que compram assinaturas anuais são membros da Cyclistic.Os analistas financeiros da Cyclistic concluíram que os membros anuais são muito mais lucrativos
+do que os passageiros casuais. Embora a flexibilidade de preços ajude a Cyclistic a atrair mais clientes, Moreno acredita que maximizar o número de membros anuais será essencial para o crescimento futuro. Em vez de criar uma campanha de marketing que tenha como alvo clientes totalmente novos, Moreno acredita que há uma oportunidade sólida para converter ciclistas casuais em membros. Ela observa que os ciclistas casuais já estão cientes do programa Cyclistic e escolheram a Cyclistic para suas necessidades de mobilidade.
+Moreno estabeleceu uma meta clara: criar estratégias de marketing voltadas para converter ciclistas casuaisem membros anuais. Para fazer isso, no entanto, a equipe precisa entender como os membros anuais e os ciclistas casuais diferem, por que os ciclistas casuais comprariam uma assinatura e como a mídia digital pode afetar suas táticas de marketing. Moreno e sua equipe estão interessados em analisar os dados históricos de viagens de bicicleta da Cyclistic para identificar tendências.
+
+### Cenário proposto
+Você é um analista de dados júnior trabalhando na equipe de analistas de marketing da Cyclistic, uma empresa de compartilhamento de bicicletas em Chicago. O diretor de marketing acredita que o sucesso futuro da empresa depende da maximização do número de assinaturas anuais. Portanto, sua equipe quer entender como os ciclistas casuais e os membros anuais usam as bicicletas Cyclistic de forma diferente. A partir desses
+insights, sua equipe criará uma nova estratégia de marketing para converter ciclistas casuais em membros anuais. Mas primeiro, os executivos da Cyclistic devem aprovar suas recomendações, então elas devem ser apoiadas com insights de dados convincentes e visualizações de dados profissionais.
+
+## Objetivo da Análise
+
+O objetivo desta análise é entender o comportamento de uso das bicicletas pelos membros (assinantes) e casuais (usuários esporadicos) do sistema de aluguel de bicicletas, analisando dados dos últimos 12 meses. A análise busca responder às seguintes perguntas principais:
+
+1. Quantas viagens foram feitas por membros e casuais?
+2. Qual foi o tempo médio de viagem para membros e casuais?
+3. Quais tipos de bicicletas foram mais utilizadas por cada grupo (membro e casual)?
+4. Quais dias da semana apresentam maior número de viagens para cada tipo de usuário?
+5. Qual é a distribuição das viagens ao longo do ano por tipo de usuário?
+
+## Metodologia
+
+A análise foi realizada com os seguintes passos:
+
+1. **Importação e Limpeza dos Dados**: Os dados dos últimos 12 meses foram importados de arquivos CSV, combinados em um único dataframe e limpos para garantir que não houvesse valores faltantes ou dados inconsistentes.
+   
+2. **Transformações e Agregações**:
+   - A coluna de data foi usada para criar a variável `dia_semana`, identificando o dia da semana da viagem.
+   - As colunas de `member_casual` e `rideable_type` foram analisadas para entender os tipos de usuários e bicicletas.
+   - O `tempo de viagem` foi calculado a partir das colunas `started_at` e `ended_at`.
+   
+3. **Visualizações**:
+   - Gráficos de **pizza** foram usados para mostrar a quantidade das viagens entre os diferentes tipos de usuários.
+   - Gráficos de **barras** mostraram o total de viagens por modelo de bicicleta e por tipo de usuário e para mostrar o tempo médio de viagem por tipo de usuário.
+   - **Gráficos de linha** foram usados para mostrar a evolução das viagens ao longo dos dias da semana.
+   
+## Princiapais resultados
+
+### Quantidade de Viagens por tipo de usuário
+
+```{r} 
+library(ggplot2)
+#contar quantidade total de viagens
+quant_viagens <- trip_ano %>%
+  group_by(member_casual) %>%
+  summarise(total_viagens = n())
+
+#contar quantidade total de viagens
+ggplot(quant_viagens, aes(x="", y= total_viagens, fill= member_casual))+
+geom_bar(stat="identity", width=1) +
+  coord_polar(theta = "y")+
+  geom_text(aes(label=total_viagens),
+  position = position_stack(vjust=0.5))+
+  labs(title= "Quantidade de viagens por tipo de usuário", fill = "Tipo de usuário")+
+  theme_light() +
+  theme(
+        panel.background = element_rect(fill = "white"),
+        panel.grid = element_blank(),  
+        axis.text = element_blank(), 
+        axis.title = element_blank() 
+                              )
+```
+
+O gráfico de pizza demonstrou que uma parte significativa das viagens é realizada por membros do sistema, enquanto os usuários casuais representam uma fatia menor.
+
+### Tempo média das viagens por tipo de usuário
+
+```{r}
+#grafico de barras que representa media tempo de viagem por tipo de usuario
+ggplot(tempo_medio_usuario, aes(x=member_casual, y = tempo_medio, fill=member_casual))+
+                              geom_bar(stat="identity") +
+                              labs(title = "Tempo média da viagem por tipo de usuário", x = "Tipo de usuário", y = "Tempo Médio", fill = "Tipo de usuário")+
+                              theme_light()+
+                              theme(legend.position = "top")
+```
+
+Usuários casuais tendem a ter um tempo médio de viagem maior do que os menbros.
+
+
+### Quantidade de viagens por dia da semana
+
+```{r} 
+ggplot(viagens_dia_semana, aes(x = dia_semana, y = Total_viagens_por_semana, group=member_casual, color = member_casual)) +
+                      geom_line() +
+                      labs(title = "Total de viagens por tipo de usuário e dia da semana", x = "Dia da Semana", y = "Número de viagens", color = "Tipo de usuário") +
+                      scale_y_continuous(labels = scales::label_number(accury =  1))+
+                      theme_light()+
+                      theme(axis.text.x = element_text(angle=90, hjust=1),
+                            legend.position = "top")
+```
+
+O gráfico de linha destacou que a maioria das viagens dos usuários casuais ocorre durante os fins de semana, especialmente aos sábados. Enquanto o uso das bicicletas, pelo membros, chega ao apice as quartas-feiras, vai decaindo ao decorrer da semana.
+
+### Viagens por modelo de bicicleta e tipo de usuário
+
+```{r} 
+ggplot(tipos_bicicletas, aes(x = rideable_type, member_casual, y = total_viagens_modelo, fill = member_casual)) +
+            geom_bar(stat = "identity", position = "dodge") +
+            labs(title = "Total de viagens por tipo de usuário e modelo", x = "Modelos de bicicletas", y = "Número de viagens", fill = "Tipo de usuário") +
+            theme_light()
+```
+
+O gráfico demonstra um peferia para bicletas classicas e eletricas tanto por membros como por usuários cauais.
+
+
+## Conclusões
+
+Os usuários casuais utilizam mais as bicletas durante os finais de semana e por média dia tempo maior que dos membros.
+
+## Recomendações
+
+- Oferecer planos personalizado por assinatura: Oferecer planos de adesão mais flexíveis pode atrair mais usuários. Por exemplo, planos mensais ou trimestrais com benefícios personalizados, como mais horas de uso ou menos restrições durante os fins de semana
+- oferecer promoções: Como os usuários casuais tendem a usar as bicicletas principalmente aos sábados e domingos, é uma boa ideia criar promoções focadas nesse período. Ofereça, por exemplo, um plano de assinatura com descontos ou benefícios exclusivos para quem usar a bicicleta durante o final de semana
+- Facilitar acesso: o: Um sistema de adesão simples, onde os usuários possam facilmente transitar entre usuários casuais e membros, pode ser um grande diferencial. A criação de um aplicativo ou interface de fácil acesso.
+
+
+## Próximos passos
+
+- Entender se membros e usuários casuais utilizam as bicletas para lazer ou atividades do dia-a-dia,
+- Investigar a variação de uso ao longo do ano, considerando condições climáticas e eventos sazonais, como feriados, festas, férias,
+- Investigar se existe relação de uso com localidade.
+
+## Considerações Finais
+
+A análise dos dados de viagens de bicicletas demonstrou padrões de comportamento distintos entre os usuários casuais e membros, revelando oportunidades claras para estratégias de fidelização e conversão. Enquanto os membros apresentam um uso constante ao longo da semana, com pico nas quartas-feiras, os usuários casuais se destacam principalmente nos fins de semana, especialmente aos sábados. Esse comportamento evidencia uma janela de oportunidade para atrair usuários casuais, oferecendo incentivos focados no período de maior utilização.
+Ao considerar o tempo médio de viagem, que é maior entre os usuários casuais, fica claro que esses usuários estão dispostos a investir mais tempo no sistema, o que pode ser explorado com planos de adesão que proporcionem vantagens para viagens prolongadas ou uso frequente.
+A análise contínua dos dados será essencial para ajustar essas estratégias de forma dinâmica, garantindo que as campanhas e ofertas estejam sempre alinhadas às preferências e necessidades dos usuários.
