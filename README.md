@@ -1,4 +1,2 @@
 # Analise_cyclistic
- estudo de caso
-
- Projeto em processo, precisa de melhorias
+Estudo de caso: Como um serviço de compartilhamento de bicicletas alcança o sucesso rápido?
