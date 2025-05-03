@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Estudo de Caso: Como um Serviço de Compartilhamento de Bicicletas Alcança o Sucesso Rápido?
 
 Este projeto é parte do trabalho final para obtenção da certificação **Google Data Analytics Professional**, proposto pela plataforma Coursera. A análise foi realizada por Vanessa Costa com base em dados da empresa fictícia **Cyclistic**, que opera um sistema de compartilhamento de bicicletas em Chicago.
