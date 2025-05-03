@@ -46,6 +46,3 @@ Analisar o comportamento dos usuários do sistema (membros e casuais) e identifi
 ## Conclusão
 
 A análise identificou diferenças claras entre membros e usuários casuais, permitindo desenvolver estratégias de marketing mais direcionadas para aumentar a base de assinantes anuais.
-=======
-# Analise_cyclistic
-Estudo de caso: Como um serviço de compartilhamento de bicicletas alcança o sucesso rápido?
